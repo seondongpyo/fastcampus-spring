@@ -36,6 +36,21 @@ class UserRepositoryTest {
 		assertThat(foundUser.getEmail()).isEqualTo(user.getEmail());
 	}
 
+	@DisplayName("여러 사용자 저장")
+	@Test
+	void saveAll() {
+		// given
+		User user1 = new User("user1", "user1@gmail.com");
+		User user2 = new User("user2", "user2@gmail.com");
+		userRepository.saveAll(Arrays.asList(user1, user2));
+
+		// when
+		List<User> users = userRepository.findAll();
+
+		// then
+		assertThat(users).hasSize(7);
+	}
+
 	@DisplayName("모든 사용자 찾기")
 	@Test
 	void findAll() {
