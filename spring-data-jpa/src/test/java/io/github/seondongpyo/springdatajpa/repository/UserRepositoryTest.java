@@ -6,10 +6,16 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceUnitUtil;
+
+import org.hibernate.Hibernate;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import io.github.seondongpyo.springdatajpa.domain.User;
 
@@ -17,9 +23,13 @@ import io.github.seondongpyo.springdatajpa.domain.User;
 @DisplayName("UserRepository 테스트 - data.sql")
 class UserRepositoryTest {
 
+	@PersistenceContext
+	private EntityManager em;
+
 	@Autowired
 	private UserRepository userRepository;
 
+	@Transactional
 	@DisplayName("사용자 저장")
 	@Test
 	void save() {
@@ -36,6 +46,7 @@ class UserRepositoryTest {
 		assertThat(foundUser.getEmail()).isEqualTo(user.getEmail());
 	}
 
+	@Transactional
 	@DisplayName("여러 사용자 저장")
 	@Test
 	void saveAll() {
@@ -81,6 +92,35 @@ class UserRepositoryTest {
 
 		// then
 		assertThat(userNames).contains("Kim", "Park", "Choi");
+	}
+	
+	@DisplayName("프록시 조회하기")
+	@Test
+	void proxy() {
+		// given
+		User userProxy = userRepository.getOne(1L);
+
+		// when
+		PersistenceUnitUtil persistenceUnitUtil = em.getEntityManagerFactory().getPersistenceUnitUtil();
+
+		// then
+		assertThat(userProxy.getClass()).isNotEqualTo(User.class);
+		assertThat(persistenceUnitUtil.isLoaded(userProxy)).isFalse();
+	}
+
+	@Transactional
+	@DisplayName("프록시 초기화하기")
+	@Test
+	void initProxy() {
+		// given
+		User userProxy = userRepository.getOne(1L);
+
+		// when
+		Hibernate.initialize(userProxy);
+		PersistenceUnitUtil persistenceUnitUtil = em.getEntityManagerFactory().getPersistenceUnitUtil();
+
+		// then
+		assertThat(persistenceUnitUtil.isLoaded(userProxy)).isTrue();
 	}
 
 }
