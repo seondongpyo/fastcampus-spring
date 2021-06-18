@@ -147,7 +147,7 @@ class UserRepositoryTest {
 		assertThat(exists100L).isFalse();
 	}
 
-	@DisplayName("사용자 제거하기")
+	@DisplayName("사용자 삭제하기")
 	@Test
 	void delete() {
 		// given
@@ -161,6 +161,21 @@ class UserRepositoryTest {
 
 		// then
 		assertThat(user).isNull();
+	}
+
+	@Transactional
+	@DisplayName("특정 사용자들 삭제하기")
+	@Test
+	void deleteAll() {
+		// given
+		List<User> users = userRepository.findAllById(Arrays.asList(1L, 2L, 3L));
+
+		// when
+		userRepository.deleteAll(users);
+		List<User> leftUsers = userRepository.findAll();
+
+		// then
+		assertThat(leftUsers).hasSize(2);
 	}
 
 }
