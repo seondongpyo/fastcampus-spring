@@ -134,4 +134,17 @@ class UserRepositoryTest {
 		assertThat(count).isEqualTo(5);
 	}
 
+	@DisplayName("existsById 사용하기")
+	@Test
+	void exists() {
+		// given
+		// when
+		boolean exists1L = userRepository.existsById(1L);
+		boolean exists100L = userRepository.existsById(100L);
+
+		// then
+		assertThat(exists1L).isTrue();
+		assertThat(exists100L).isFalse();
+	}
+
 }
