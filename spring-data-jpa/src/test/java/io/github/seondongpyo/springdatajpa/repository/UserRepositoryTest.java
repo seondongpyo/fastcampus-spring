@@ -147,4 +147,20 @@ class UserRepositoryTest {
 		assertThat(exists100L).isFalse();
 	}
 
+	@DisplayName("사용자 제거하기")
+	@Test
+	void delete() {
+		// given
+		User newUser = userRepository.save(new User());
+		User foundUser = userRepository.findById(newUser.getId())
+										.orElseThrow(IllegalArgumentException::new);
+
+		// when
+		userRepository.delete(foundUser);
+		User user = userRepository.findById(newUser.getId()).orElse(null);
+
+		// then
+		assertThat(user).isNull();
+	}
+
 }
