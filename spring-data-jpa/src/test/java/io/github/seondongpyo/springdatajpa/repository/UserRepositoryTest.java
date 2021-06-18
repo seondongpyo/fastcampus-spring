@@ -123,4 +123,15 @@ class UserRepositoryTest {
 		assertThat(persistenceUnitUtil.isLoaded(userProxy)).isTrue();
 	}
 
+	@DisplayName("count 구하기")
+	@Test
+	void count() {
+		// given
+		// when
+		long count = userRepository.count();
+
+		// then
+		assertThat(count).isEqualTo(5);
+	}
+
 }
