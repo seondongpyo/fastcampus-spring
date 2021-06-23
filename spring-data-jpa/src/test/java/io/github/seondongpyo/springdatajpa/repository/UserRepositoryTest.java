@@ -123,4 +123,17 @@ class UserRepositoryTest {
 		assertThat(persistenceUnitUtil.isLoaded(userProxy)).isTrue();
 	}
 
+	@DisplayName("이름으로 사용자 조회")
+	@Test
+	void findByUsername() {
+		// given
+		String username = "Kim";
+
+		// when
+		User foundUser = userRepository.findByName(username);
+
+		// then
+		assertThat(foundUser.getName()).isEqualTo(username);
+	}
+
 }
