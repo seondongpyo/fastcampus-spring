@@ -123,6 +123,61 @@ class UserRepositoryTest {
 		assertThat(persistenceUnitUtil.isLoaded(userProxy)).isTrue();
 	}
 
+	@DisplayName("count 구하기")
+	@Test
+	void count() {
+		// given
+		// when
+		long count = userRepository.count();
+
+		// then
+		assertThat(count).isEqualTo(5);
+	}
+
+	@DisplayName("existsById 사용하기")
+	@Test
+	void exists() {
+		// given
+		// when
+		boolean exists1L = userRepository.existsById(1L);
+		boolean exists100L = userRepository.existsById(100L);
+
+		// then
+		assertThat(exists1L).isTrue();
+		assertThat(exists100L).isFalse();
+	}
+
+	@DisplayName("사용자 삭제하기")
+	@Test
+	void delete() {
+		// given
+		User newUser = userRepository.save(new User());
+		User foundUser = userRepository.findById(newUser.getId())
+										.orElseThrow(IllegalArgumentException::new);
+
+		// when
+		userRepository.delete(foundUser);
+		User user = userRepository.findById(newUser.getId()).orElse(null);
+
+		// then
+		assertThat(user).isNull();
+	}
+
+	@Transactional
+	@DisplayName("특정 사용자들 삭제하기")
+	@Test
+	void deleteAll() {
+		// given
+		List<User> users = userRepository.findAllById(Arrays.asList(1L, 2L, 3L));
+
+		// when
+		userRepository.deleteAll(users);
+		List<User> leftUsers = userRepository.findAll();
+
+		// then
+		assertThat(leftUsers).hasSize(2);
+	}
+
 	@DisplayName("이름으로 사용자 조회")
 	@Test
 	void findByUsername() {
