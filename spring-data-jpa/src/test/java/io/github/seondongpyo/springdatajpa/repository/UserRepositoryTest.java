@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.*;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
@@ -185,10 +186,11 @@ class UserRepositoryTest {
 		String username = "Kim";
 
 		// when
-		User foundUser = userRepository.findByName(username);
+		Optional<User> foundUser = userRepository.findByName(username);
 
 		// then
-		assertThat(foundUser.getName()).isEqualTo(username);
+		assertThat(foundUser).isPresent();
+		assertThat(foundUser.get().getName()).isEqualTo(username);
 	}
 
 }
