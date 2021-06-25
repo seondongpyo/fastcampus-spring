@@ -193,9 +193,9 @@ class UserRepositoryTest {
 		assertThat(foundUser.get().getName()).isEqualTo(username);
 	}
 
-	@DisplayName("쿼리 메서드")
+	@DisplayName("쿼리 메서드 - 이메일로 User 조회")
 	@Test
-	void queryMethod() {
+	void byEmail() {
 		// given
 		String email = "kim@gmail.com";
 
@@ -216,6 +216,30 @@ class UserRepositoryTest {
 			.isEqualTo(foundUser5)
 			.isEqualTo(foundUser6)
 			.isEqualTo(foundUser7);
+	}
+
+	@Transactional
+	@DisplayName("쿼리 메서드 - 첫 번째 User만 조회하기")
+	@Test
+	void getFirstUser() {
+		// given
+		String username1 = "Hong";
+		String email1 = "hong@naver.com";
+		String username2 = "Choi";
+		String email2 = "choi@naver.com";
+
+		userRepository.save(new User(username1, email1));
+		userRepository.save(new User(username2, email2));
+
+		// when
+		User foundUser1 = userRepository.findTop1ByName(username1);
+		User foundUser2 = userRepository.findFirst1ByName(username2);
+
+		// then
+		assertThat(foundUser1.getName()).isEqualTo(username1);
+		assertThat(foundUser1.getEmail()).isNotEqualTo(email1);
+		assertThat(foundUser2.getName()).isEqualTo(username2);
+		assertThat(foundUser2.getEmail()).isNotEqualTo(email2);
 	}
 
 }
