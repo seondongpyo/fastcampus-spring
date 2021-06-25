@@ -206,6 +206,7 @@ class UserRepositoryTest {
 		User foundUser4 = userRepository.searchByEmail(email);
 		User foundUser5 = userRepository.streamByEmail(email);
 		User foundUser6 = userRepository.findUserByEmail(email);
+		User foundUser7 = userRepository.queryByEmail(email);
 
 		// then
 		assertThat(foundUser1)
@@ -213,7 +214,8 @@ class UserRepositoryTest {
 			.isEqualTo(foundUser3)
 			.isEqualTo(foundUser4)
 			.isEqualTo(foundUser5)
-			.isEqualTo(foundUser6);
+			.isEqualTo(foundUser6)
+			.isEqualTo(foundUser7);
 	}
 
 }
