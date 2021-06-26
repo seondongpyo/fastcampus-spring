@@ -1,5 +1,6 @@
 package io.github.seondongpyo.springdatajpa.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -23,5 +24,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	User findTop1ByName(String name);
 
 	User findByNameAndEmail(String name, String email);
-
+	List<User> findByNameOrEmail(String name, String email);
 }
