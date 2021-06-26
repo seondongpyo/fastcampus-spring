@@ -1,5 +1,6 @@
 package io.github.seondongpyo.springdatajpa.repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,4 +26,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 	User findByNameAndEmail(String name, String email);
 	List<User> findByNameOrEmail(String name, String email);
+
+	List<User> findAllByCreatedAtAfter(LocalDateTime localDateTime);
 }

@@ -34,4 +34,10 @@ public class User {
 
 	private LocalDateTime lastModifiedAt;
 
+	public User(@NonNull String name, @NonNull String email, LocalDateTime createdAt, LocalDateTime lastModifiedAt) {
+		this.name = name;
+		this.email = email;
+		this.createdAt = createdAt;
+		this.lastModifiedAt = lastModifiedAt;
+	}
 }

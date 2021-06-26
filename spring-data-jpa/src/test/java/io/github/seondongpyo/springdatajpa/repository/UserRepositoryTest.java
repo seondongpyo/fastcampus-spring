@@ -2,6 +2,7 @@ package io.github.seondongpyo.springdatajpa.repository;
 
 import static org.assertj.core.api.Assertions.*;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -276,6 +277,24 @@ class UserRepositoryTest {
 
 		// then
 		assertThat(users).hasSize(2).contains(user1, user2);
+	}
+
+	@Transactional
+	@DisplayName("AFTER")
+	@Test
+	void after() {
+		// given
+		userRepository.save(new User("user1", "user@gmail.com"));
+
+		LocalDateTime now = LocalDateTime.now();
+		userRepository.save(new User("user2", "user2@gmail.com", LocalDateTime.now(), LocalDateTime.now()));
+		userRepository.save(new User("user3", "user3@gmail.com", LocalDateTime.now(), LocalDateTime.now()));
+
+		// when
+		List<User> users = userRepository.findAllByCreatedAtAfter(now);
+
+		// then
+		assertThat(users).hasSize(2);
 	}
 
 }
