@@ -297,4 +297,18 @@ class UserRepositoryTest {
 		assertThat(users).hasSize(2);
 	}
 
+	@Transactional
+	@DisplayName("BEFORE")
+	@Test
+	void before() {
+		// given
+		LocalDateTime now = LocalDateTime.now();
+
+		// when
+		List<User> users = userRepository.findAllByCreatedAtBefore(now);
+
+		// then
+		assertThat(users).hasSize(5);
+	}
+
 }
