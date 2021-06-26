@@ -242,4 +242,22 @@ class UserRepositoryTest {
 		assertThat(foundUser2.getEmail()).isNotEqualTo(email2);
 	}
 
+	@DisplayName("A and B")
+	@Test
+	void findByNameAndEmail() {
+		// given
+		User user1 = new User("user", "user1@gmail.com");
+		User user2 = new User("user", "user2@gmail.com");
+		userRepository.save(user1);
+		userRepository.save(user2);
+
+		// when
+		User foundUser1 = userRepository.findByNameAndEmail("user", "user1@gmail.com");
+		User foundUser2 = userRepository.findByNameAndEmail("user1", "user1@gmail.com");
+
+		// then
+		assertThat(foundUser1).isEqualTo(user1);
+		assertThat(foundUser2).isNull();
+	}
+
 }
