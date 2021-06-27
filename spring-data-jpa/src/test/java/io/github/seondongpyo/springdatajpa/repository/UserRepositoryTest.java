@@ -371,4 +371,22 @@ class UserRepositoryTest {
 		assertThat(users).hasSize(2);
 	}
 
+	@Transactional
+	@DisplayName("CONTAINS")
+	@Test
+	void contains() {
+		// given
+		userRepository.save(new User("Kang", "kang@yahoo.com"));
+		userRepository.save(new User("Noh", "noh@gmail.com"));
+		userRepository.save(new User("Hwang", "hwang@lycos.co.kr"));
+		userRepository.save(new User("Jang", "jang@nate.com"));
+		userRepository.save(new User("Jung", "jung@hanmail.net"));
+
+		// when
+		List<User> users = userRepository.findAllByNameContains("an");
+
+		// then
+		assertThat(users).hasSize(3);
+	}
+
 }
