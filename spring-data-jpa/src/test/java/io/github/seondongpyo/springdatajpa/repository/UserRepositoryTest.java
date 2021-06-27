@@ -1,17 +1,6 @@
 package io.github.seondongpyo.springdatajpa.repository;
 
-import static org.assertj.core.api.Assertions.*;
-
-import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceUnitUtil;
-
+import io.github.seondongpyo.springdatajpa.domain.User;
 import org.hibernate.Hibernate;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,7 +8,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import io.github.seondongpyo.springdatajpa.domain.User;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceUnitUtil;
+import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @DisplayName("UserRepository 테스트 - data.sql")
@@ -325,6 +323,21 @@ class UserRepositoryTest {
 		// then
 		assertThat(users).hasSize(5);
 		assertThat(users.size()).isNotEqualTo(7);
+	}
+
+	@DisplayName("IN")
+	@Test
+	void in() {
+		// given
+		List<String> names = Arrays.asList("Kim", "Hong", "Choi");
+
+		// when
+		List<User> users = userRepository.findAllByNameIn(names);
+		List<String> userNames = users.stream().map(User::getName).collect(Collectors.toList());
+
+		// then
+		assertThat(users).hasSize(3);
+		assertThat(userNames).containsExactly("Kim", "Hong", "Choi");
 	}
 
 }
