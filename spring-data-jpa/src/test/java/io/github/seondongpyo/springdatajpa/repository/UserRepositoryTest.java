@@ -389,4 +389,24 @@ class UserRepositoryTest {
 		assertThat(users).hasSize(3);
 	}
 
+	@Transactional
+	@DisplayName("LIKE")
+	@Test
+	void like() {
+		// given
+		userRepository.save(new User("Kang", "kang@yahoo.com"));
+		userRepository.save(new User("Noh", "noh@gmail.com"));
+		userRepository.save(new User("Hwang", "hwang@lycos.co.kr"));
+		userRepository.save(new User("Jang", "jang@nate.com"));
+		userRepository.save(new User("Jung", "jung@hanmail.net"));
+
+		// when
+		List<User> users1 = userRepository.findAllByNameLike("%an%");
+		List<User> users2 = userRepository.findAllByNameLike("an");
+
+		// then
+		assertThat(users1).hasSize(3);
+		assertThat(users2).isEmpty();
+	}
+
 }

@@ -38,4 +38,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	List<User> findAllByEmailEndingWith(String suffix);
 
 	List<User> findAllByNameContains(String word);
+	List<User> findAllByNameLike(String word);
 }
