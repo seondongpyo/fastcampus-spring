@@ -340,4 +340,35 @@ class UserRepositoryTest {
 		assertThat(userNames).containsExactly("Kim", "Hong", "Choi");
 	}
 
+	@Transactional
+	@DisplayName("START WITH")
+	@Test
+	void startWith() {
+		// given
+		userRepository.save(new User("Kang", "kang@gmail.com"));
+
+		// when
+		List<User> users = userRepository.findAllByEmailStartingWith("k");
+
+		// then
+		assertThat(users).hasSize(2);
+	}
+
+	@Transactional
+	@DisplayName("END WITH")
+	@Test
+	void endWith() {
+		// given
+		userRepository.save(new User("a", "a@hanmail.net"));
+		userRepository.save(new User("b", "b@hanmail.net"));
+		userRepository.save(new User("c", "c@nate.com"));
+		userRepository.save(new User("d", "b@naver.com"));
+
+		// when
+		List<User> users = userRepository.findAllByEmailEndingWith(".net");
+
+		// then
+		assertThat(users).hasSize(2);
+	}
+
 }

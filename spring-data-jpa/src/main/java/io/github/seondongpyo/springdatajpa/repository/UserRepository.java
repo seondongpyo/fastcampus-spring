@@ -33,4 +33,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	List<User> findAllByNameIsNotNull();
 
 	List<User> findAllByNameIn(List<String> names);
+
+	List<User> findAllByEmailStartingWith(String prefix);
+	List<User> findAllByEmailEndingWith(String suffix);
 }
