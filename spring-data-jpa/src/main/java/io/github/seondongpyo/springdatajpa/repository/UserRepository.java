@@ -29,4 +29,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 	List<User> findAllByCreatedAtAfter(LocalDateTime localDateTime);
 	List<User> findAllByCreatedAtBefore(LocalDateTime localDateTime);
+
+	List<User> findAllByNameIsNotNull();
 }

@@ -311,4 +311,20 @@ class UserRepositoryTest {
 		assertThat(users).hasSize(5);
 	}
 
+	@Transactional
+	@DisplayName("NOT NULL")
+	@Test
+	void notNull() {
+		// given
+		userRepository.save(new User());
+		userRepository.save(new User());
+
+		// when
+		List<User> users = userRepository.findAllByNameIsNotNull();
+
+		// then
+		assertThat(users).hasSize(5);
+		assertThat(users.size()).isNotEqualTo(7);
+	}
+
 }
